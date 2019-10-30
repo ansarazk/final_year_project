@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" type="image/png" href="">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>
+    Water Pollution Data
+  </title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- CSS Files -->
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../assets/css/now-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="../assets/demo/demo.css" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+  <style>
+ 
+      .body{
+          background-color: #DEB887;
+      }
+
+      .tooltip{
+        color:rgb(240, 15, 15);
+      }
+
+      table.center {
+          margin-left:auto; 
+          margin-right:auto;
+      }
+      
+      .text{
+          text-decoration-color: steelblue;
+      }
+
+      .bar{
+          fill: #2c4e11;
+      }
+
+      .bar1{
+          fill: green;
+      }
+
+      .bar2{
+          fill: rgb(83, 7, 83);
+      }
+
+      .bar3{
+          fill: #0d365a;
+      }
+
+      .bar:hover{
+          fill: #dd463b;
+      }
+
+      .bar1:hover{
+          fill: #dd463b;
+      }
+
+      .bar2:hover{
+          fill: #dd463b;
+      }
+
+      .bar3:hover{
+          fill: yellow;
+      }
+
+      .axis {
+          font: 10px sans-serif;
+      }
+
+      .axis path,
+      .axis line {
+          fill: none;
+          stroke: #000;
+          shape-rendering: crispEdges;
+      }
+      
+      .hum{
+        color: #993366;
+      }
+
+      .tem{
+        color: steelblue;
+      }
+
+      .tu{
+        color: green;
+      }
+
+      .do{
+        color: #FF9900;
+      }
+
+      .bar{
+          fill: #4897dc;
+      }
+         
+      .bar:hover{
+        fill: Tomato;
+      }
+         
+      .axis {
+        font: 10px sans-serif;
+      }
+         
+      .axis path,
+      .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+      }
+      
+  </style>
+</head>
+
+<body class="">
+  <div class="wrapper ">
+    <div class="sidebar" data-color="blue">
+      <!--
+        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
+    -->
+      <div class="logo">
+        <a href="index.html" class="simple-text logo-normal" align="Center">
+          <script>
+          var today = new Date();
+          var dd = today.getDate();
+          var mm = today.getMonth()+1; //January is 0!
+          var day = today.getDay()+1;
+          var yyyy = today.getFullYear();
+
+          if(dd<10) {
+            dd = '0'+dd
+          } 
+
+          if(mm<10) {
+            mm = '0'+mm
+          } 
+
+          var da = "";
+
+            switch(day){
+              case(1):{
+                da = "Sunday";
+                break;
+              }
+              case(2):{
+                da = "Monday";
+                break;
+              }
+              case(3):{
+                da = "Tuesday";
+                break;
+              }
+              case(4):{
+                da = "Wednesday";
+                break;
+              }
+              case(5):{
+                da = "Thursday";
+                break;
+              }
+              case(6):{
+                da = "Friday";
+                break;
+              }
+              case(7):{
+                da = "Saturday";
+                break;
+              }
+            }
+
+            today = '<b>'+dd + ' / ' + mm + ' / ' + yyyy+'</b><br><b>'+ da +'</b>';
+            document.write(today);
+          </script>
+        </a>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li>
+            <a href="index.html">
+              <i class="now-ui-icons design_app"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="active">
+            <a href="location1.html">
+              <i class="now-ui-icons location_pin"></i>
+              <p>Location 1</p>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="now-ui-icons location_pin"></i>
+              <p>Location 2</p>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="now-ui-icons location_pin"></i>
+              <p>Location 3</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute bg-primary fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <a class="navbar-brand" href="#pablo"><font size="5">Water Pollution Data Analysis : LOCATION 1</font></a>
+          </div>
+      </nav>
+      <!-- End Navbar -->
+      <div class="panel-header" style="height: 3cm">
+        <!--<canvas id="bigDashboardChart"></canvas>-->
+      </div>
+      <div class="content">
+        <div class="row">        
+          <div class="col-lg-6">
+            <div class="card card-chart">
+              <div class="card-header">
+                <h5 class="card-category">Water Sensor Data</h5>
+                <h4 class="card-title">Dissolved Oxygen</h4>
+              <div class="card-body">
+                <div id="do"></div><!--Adding chart from do_1.js-->
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="now-ui-icons arrows-1_refresh-69"></i> Refresh to update
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          <div class="col-lg-6">
+              <div class="card card-chart">
+                <div class="card-header">
+                  <h5 class="card-category">Water Sensor Data</h5>
+                  <h4 class="card-title">Temperature</h4>
+                <div class="card-body">
+                  <div id="temp"></div><!--Adding chart from temperature_1.js-->
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    <i class="now-ui-icons arrows-1_refresh-69"></i> Refresh to update
+                  </div>
+                </div>
+              </div>
+          </div>         
+      </div>
+          <div class="col-lg-6">
+               <div class="card card-chart">
+                 <div class="card-header">
+                   <h5 class="card-category">Water Sensor Data</h5>
+                   <h4 class="card-title">Turbidity</h4>
+                 <div class="card-body">
+                   <div id="tur"></div><!--Adding chart from turbidity_1.js-->
+                 </div>
+                 <div class="card-footer">
+                   <div class="stats">
+                     <i class="now-ui-icons arrows-1_refresh-69"></i> Refresh to update
+                   </div>
+                 </div>
+               </div>
+             </div>
+          </div>
+          <div class="col-lg-6">
+              <div class="card card-chart">
+                <div class="card-header">
+                  <h5 class="card-category">Water Sensor Data</h5>
+                  <h4 class="card-title">Humidity</h4>
+                <div class="card-body">
+                  <div id="hum"></div><!--Adding chart from humidity_1.js-->
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    <i class="now-ui-icons arrows-1_refresh-69"></i> Refresh to update
+                  </div>
+                </div>
+              </div>
+            </div>         
+        </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!--   Core JS Files   -->
+  <script src="../assets/js/core/jquery.min.js"></script>
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!--  Google Maps Plugin    -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <!-- Chart JS -->
+  <script src="../assets/js/plugins/chartjs.min.js"></script>
+  <!--  Notifications Plugin    -->
+  <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="../assets/js/now-ui-dashboard.min.js?v=1.1.0" type="text/javascript"></script>
+  <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
+  <script src="../assets/demo/demo.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      demo.initDashboardPageCharts();
+
+    });
+  </script>
+</body>
+<script src="temperature_1.js"></script>
+<script src="humidity_1.js"></script>
+<script src="do_1.js"></script>
+<script src="turbidity_1.js"></script>
+
+</html>
